@@ -1,8 +1,9 @@
-import { Card, CardMedia, CardContent, Typography, CardActions, Button, CardHeader, Avatar, IconButton } from '@mui/material'
+import { Card, CardMedia, CardContent, Typography, Button, CardHeader, Avatar, IconButton, CardActions } from '@mui/material'
 import React from 'react'
-import { Product } from '../../app/models/Product'
 import { red } from '@mui/material/colors';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { Product } from '../../app/models/Product';
+import { Link } from 'react-router-dom';
 
 interface Props {
   product : Product
@@ -11,8 +12,8 @@ interface Props {
 export default function ProductCart({product} : Props) {
 
   return (
-    <>
     
+
     <Card sx={{ maxWidth:"100%" }}>
     <CardHeader
         avatar={
@@ -45,12 +46,12 @@ export default function ProductCart({product} : Props) {
         {(product.brand)} / {(product.type)}
       </Typography>
     </CardContent>
+
     <CardActions>
       <Button size="small">Add to Cart</Button>
-      <Button size="small">View</Button>
+      <Button size="small" component={Link} to={`/catalog/${product.id}`}> View </Button>
     </CardActions>
   </Card>
-
-    </>
-  )
+    
+  );
 }
