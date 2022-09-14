@@ -1,26 +1,21 @@
 using API.Data;
+using API.Middleware;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-builder.Services.AddDbContext<StoreContext>(opt=>{
+builder.Services.AddDbContext<StoreContext>(opt =>
+{
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
-    });
+});
 
 #region Cors
-var  MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
-
+var MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(name: MyAllowSpecificOrigins,
-                      policy  =>
+                      policy =>
                       {
                           policy.AllowAnyHeader()
                           .AllowAnyMethod()
@@ -28,27 +23,29 @@ builder.Services.AddCors(options =>
                           .WithOrigins("http://localhost:3000");
                       });
 });
-
-
 #endregion
+builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-
-// #region //สร้ำงข้อมูลจ ำลอง Fake data
-using var scope = app.Services.CreateScope(); //using หลังท ำงำนเสร็จจะถูกท ำลำยจำกMemory
+#region  //สร้างข้อมูลจำลอง Fake data
+using var scope = app.Services.CreateScope(); //using หลังทำงานเสร็จจะถูกทำลายจากMemory
 var context = scope.ServiceProvider.GetRequiredService<StoreContext>();
 var logger = scope.ServiceProvider.GetRequiredService<ILogger<Program>>();
+
 try
 {
-await context.Database.MigrateAsync(); //สร้ำง DB ให้อัตโนมัติถ้ำยังไม่มี
-await DbInitializer.Initialize(context); //สร้ำงข้อมูลสินค้ำจ ำลอง
+    await context.Database.MigrateAsync();   //สร้าง DB ให้อัตโนมัติถ้ายังไม่มี
+    await DbInitializer.Initialize(context); //สร้างข้อมูลสินค้าจำลอง
 }
 catch (Exception ex)
 {
-logger.LogError(ex, "Problem migrating data");
+    logger.LogError(ex, "Problem migrating data");
 }
-// #endregion
+#endregion
 
 
 // Configure the HTTP request pipeline.
@@ -58,12 +55,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection();  web
+// app.UseHttpsRedirection();
+
+#region ส่ง error ไปให้ Axios ตอนทำ Interceptor
+  app.UseMiddleware<ExceptionMiddleware>(); 
+#endregion
+
 
 app.UseRouting();
-
 app.UseCors(MyAllowSpecificOrigins);
-
 app.UseAuthorization();
 
 app.MapControllers();

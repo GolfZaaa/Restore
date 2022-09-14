@@ -4,7 +4,7 @@
 
 namespace API.Data.Migrations
 {
-    public partial class InitCreateDb : Migration
+    public partial class InitialCreateDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -14,12 +14,12 @@ namespace API.Data.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
+                    Description = table.Column<string>(type: "TEXT", nullable: false),
                     Price = table.Column<long>(type: "INTEGER", nullable: false),
-                    PictureUrl = table.Column<string>(type: "TEXT", nullable: true),
-                    Type = table.Column<string>(type: "TEXT", nullable: true),
-                    Brand = table.Column<string>(type: "TEXT", nullable: true),
+                    PictureUrl = table.Column<string>(type: "TEXT", nullable: false),
+                    Type = table.Column<string>(type: "TEXT", nullable: false),
+                    Brand = table.Column<string>(type: "TEXT", nullable: false),
                     QuantityInStock = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
