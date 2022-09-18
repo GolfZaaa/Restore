@@ -10,16 +10,30 @@ import {
   IconButton,
 } from "@mui/material";
 import { red } from "@mui/material/colors";
-import React from "react";
+import React, { useState } from "react";
 import { Product } from "../../App/models/Product";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import { Link } from "react-router-dom";
+import { LoadingButton } from "@mui/lab";
+import agent from "../../App/api/agent";
+import { useStoreContext } from "../../App/context/StoreContext";
 
 interface Props {
   product: Product;
 }
 
 export default function ProductCard({ product }: Props) {
+  const [loading, setLoading] = useState(false);
+  const { setBasket } = useStoreContext();
+
+  function handleAddItem(productId: number) {
+    setLoading(!loading);
+    agent.Basket.addItem(productId)
+      .then((basket)=>setBasket(basket))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
+  }
+
   return (
     <>
       <Card sx={{ maxWidth: "100%" }}>
@@ -54,7 +68,13 @@ export default function ProductCard({ product }: Props) {
           </Typography>
         </CardContent>
         <CardActions>
-          <Button size="small">Add to Cart</Button>
+          <LoadingButton
+            loading={loading}
+            onClick={() =>handleAddItem(product.id)}
+            size="small"
+          >
+            Add to cart
+          </LoadingButton>
           <Button size="small" component={Link} to={`/catalog/${product.id}`}>
             View
           </Button>
