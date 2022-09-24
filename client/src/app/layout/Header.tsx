@@ -13,7 +13,8 @@ import {
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { Link, NavLink } from "react-router-dom";
-import { useStoreContext } from "../context/StoreContext";
+
+import { useAppSelector } from "../store/configureStore";
 
 const midLinks = [
   { title: "catalog", path: "/catalog" },
@@ -39,12 +40,12 @@ const navStyles = {
   };
 
 export default function Header(props: any) {
-  const { basket } = useStoreContext();
+  const {basket} = useAppSelector(state=>state.basket)
   const itemCount = basket?.items.reduce((sum, item) => sum + item.quantity, 0);
 
   
   return (
-    <Box sx={{ flexGrow: 1, mb: 5 }}>
+    <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar
           sx={{
@@ -60,9 +61,13 @@ export default function Header(props: any) {
               color="default"
             />
             <MenuIcon />
-            <Typography variant="h6" component="div">
+
+            <IconButton component={Link} to="/">
+            <Typography  variant="h6" component="div">
               AN515-51
             </Typography>
+            </IconButton>
+
           </Box>
           <List sx={{ display: "flex" }}>
             {midLinks.map(({ title, path }) => (
