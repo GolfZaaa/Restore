@@ -10,12 +10,10 @@ import { Box, Button, Grid } from "@mui/material";
 import { currencyFormat } from "../../App/util/util";
 import { LoadingButton } from "@mui/lab";
 import { Add, Delete, Remove } from "@mui/icons-material";
-import { useState } from "react";
-import agent from "../../App/api/agent";
 import { Link } from "react-router-dom";
 import BasketSummary from "./BasketSummary";
 import { useAppDispatch, useAppSelector } from "../../App/store/configureStore";
-import { addBasketItemAsync, removeBasketItemAsync, removeItem, setBasket } from "./basketSlice";
+import { addBasketItemAsync, removeBasketItemAsync} from "./basketSlice";
 
 export default function BasketPage() {
   const {basket, status} = useAppSelector(state=>state.basket)
