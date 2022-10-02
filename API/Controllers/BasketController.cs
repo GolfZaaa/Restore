@@ -45,7 +45,7 @@ namespace API.Controllers
             basket.AddItem(product, quantity);
             var result = await _context.SaveChangesAsync() > 0;
             //Redirect to Route 
-            if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto);
+            if (result) return CreatedAtRoute("GetBasket", basket.MapBasketToDto());
             return BadRequest(new ProblemDetails { Title = "Problem saving item to basket" });
         }
 

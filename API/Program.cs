@@ -36,7 +36,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddIdentityCore<User>(opt=>{
 	 opt.User.RequireUniqueEmail = true;
 })
-     .AddRoles<IdentityRole>()
+     .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 
 builder.Services.AddAuthentication();
@@ -48,7 +48,7 @@ builder.Services.AddIdentityCore<User>(opt =>
 {
     opt.User.RequireUniqueEmail = true;
 })
-    .AddRoles<IdentityRole>()
+    .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 
 //ยืนยัน Token ที่ได้รับว่าถูกต้องหรือไม่บนเซิฟเวอร์
