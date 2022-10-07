@@ -13,6 +13,9 @@ namespace API.Entities
 
         // ICollection คือแม่ของ list
         public List<BasketItem> Items { get; set; } = new();
+        public string? PaymentIntentId { get; set; }
+        public string? ClientSecret { get; set; }
+
 
         public void AddItem(Product product, int quantity)
         {
@@ -38,4 +41,4 @@ namespace API.Entities
             if (item.Quantity <= 0) Items.Remove(item);
         }
     }
-} 
+}

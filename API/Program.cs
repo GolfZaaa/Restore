@@ -39,8 +39,7 @@ builder.Services.AddIdentityCore<User>(opt=>{
      .AddRoles<Role>()
     .AddEntityFrameworkStores<StoreContext>();
 
-builder.Services.AddAuthentication();
-builder.Services.AddAuthorization();
+
 #endregion
 
 #region Identityสร้างเซอร์วิส User,Role (ระวังการเรียงลำดับ)
@@ -65,7 +64,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                                    .GetBytes(builder.Configuration["JWTSettings:TokenKey"]))
                            };
                        });
-
+builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 builder.Services.AddAuthorization();
 builder.Services.AddScoped<TokenService>();
 #endregion
@@ -106,6 +106,8 @@ builder.Services.AddSwaggerGen(c =>
                     }
         });
     });
+
+    builder.Services.AddScoped<PaymentService>();
 #endregion
 
 

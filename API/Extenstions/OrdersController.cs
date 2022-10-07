@@ -84,6 +84,7 @@ namespace API.Extenstions
                 ShippingAddress = orderDto.ShippingAddress,
                 Subtotal = subtotal,
                 DeliveryFee = deliveryFee,
+                PaymentIntentId = basket.PaymentIntentId
             };
 
             _context.Orders.Add(order); //สร้าง Order และ OrderItem ในขั้นตอนเดียว
