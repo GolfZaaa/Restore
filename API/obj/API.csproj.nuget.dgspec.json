@@ -68,6 +68,10 @@
               "target": "Package",
               "version": "[6.0.9, )"
             },
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
+              "target": "Package",
+              "version": "[6.0.7, )"
+            },
             "Stripe.net": {
               "target": "Package",
               "version": "[40.12.0, )"

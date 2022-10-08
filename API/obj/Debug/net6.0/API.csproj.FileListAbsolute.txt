@@ -77,3 +77,6 @@ D:\React\Restore\API\bin\Debug\net6.0\runtimes\unix\lib\net6.0\System.Drawing.Co
 D:\React\Restore\API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Drawing.Common.dll
 D:\React\Restore\API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 D:\React\Restore\API\bin\Debug\net6.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
+D:\React\Restore\API\bin\Debug\net6.0\API.staticwebassets.runtime.json
+D:\React\Restore\API\bin\Debug\net6.0\Npgsql.dll
+D:\React\Restore\API\bin\Debug\net6.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
