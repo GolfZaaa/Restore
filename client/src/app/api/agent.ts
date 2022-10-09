@@ -6,7 +6,7 @@ import { store } from "../store/configureStore";
 
 
 
-axios.defaults.baseURL = "http://localhost:5000/api/";
+axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 axios.defaults.withCredentials = true
 
 const ResponseBody = (response: AxiosResponse) => response.data;
@@ -22,7 +22,7 @@ axios.interceptors.request.use((config: any) => {
 
 
 axios.interceptors.response.use(async (response) => {
-    await sleep();
+  if(process.env.NODE_ENV === 'development')  await sleep()
     
     const pagination = response.headers['pagination']; //ส่งมาจาก ProductController
     if (pagination) {
@@ -73,6 +73,13 @@ const requests = {
   get: (url: string, params?: URLSearchParams) => axios.get(url, {params}).then(ResponseBody),
   post: (url: string,body:{}) => axios.post(url,body).then(ResponseBody),
   delete: (url: string) => axios.delete(url).then(ResponseBody),
+  postForm: (url: string, data: FormData) => axios.post(url, data, {
+    headers: { 'Content-type': 'multipart/form-data' }
+}).then(ResponseBody),
+putForm: (url: string, data: FormData) => axios.put(url, data, {
+    headers: { 'Content-type': 'multipart/form-data' }
+}).then(ResponseBody)
+
 
 };
 // catalog.list() เรียกใช้ได้เลย
@@ -107,6 +114,19 @@ const Payments = {
   createPaymentIntent: () => requests.post('payments', {})
 }
 
+function createFormData(item: any) {
+  let formData = new FormData();
+  for (const key in item) {
+      formData.append(key, item[key])
+  }
+  return formData;
+}
+
+const Admin = {
+  createProduct: (product: any) => requests.postForm('products', createFormData(product)),
+  updateProduct: (product: any) => requests.putForm('products', createFormData(product)),
+  deleteProduct: (id: number) => requests.delete(`products/${id}`)
+}
 
 
 const Account = {
@@ -117,14 +137,14 @@ const Account = {
 }
 
 
-
 const agent = {
   catalog,
   TestError,
   Basket,
   Account,
   Orders,
-  Payments
+  Payments,
+  Admin
 };
 
 export default agent;

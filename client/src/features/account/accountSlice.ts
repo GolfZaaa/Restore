@@ -62,8 +62,13 @@ export const accountSlice = createSlice({
             history.push('/')
         },
         setUser: (state, action) => {
-            state.user = action.payload;
+            //ดึงเฉพาะ Roles จาก Token
+            let claims = JSON.parse(window.atob(action.payload.token.split('.')[1]));
+            let roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            //ตรวจสอบกรณีมีหลาย Roles = ["Menber","Admin"]
+            state.user = {...action.payload, roles: typeof(roles) === 'string' ? [roles] : roles};
         }
+
     },
     extraReducers: (builder => {
         builder.addCase(fetchCurrentUser.rejected, (state) => {
@@ -72,12 +77,18 @@ export const accountSlice = createSlice({
             toast.error('Session expired - please login again');
             history.push('/');
         });
-        builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state, action) => {
-            state.user = action.payload;
+        builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state, action:any) => {
+            //ดึงเฉพาะ Roles จาก Token
+            let claims = JSON.parse(window.atob(action.payload.token.split('.')[1]));
+            let roles = claims['http://schemas.microsoft.com/ws/2008/06/identity/claims/role'];
+            //ตรวจสอบกรณีมีหลาย Roles = ["Menber","Admin"]
+            state.user = {...action.payload, roles: typeof(roles) === 'string' ? [roles] : roles};
         });
+
         builder.addMatcher(isAnyOf(signInUser.rejected), (state, action) => {
            throw action.payload;
         });
+        
     })
 
 })
