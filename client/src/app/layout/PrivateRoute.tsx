@@ -1,8 +1,14 @@
 import { Navigate, useLocation, Outlet } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useAppSelector } from "../store/configureStore";
 
+interface Props {
+  roles?: string[];
+}
+
+
 //โค้ดที่นำมาเว็ปปรับแล้ว
-export function PrivateRoute() {
+export function PrivateRoute({ roles }: Props) {
   const { user } = useAppSelector((state) => state.account);
 
   let location = useLocation(); //บันทึกพาทปัจจุบัน
@@ -18,6 +24,13 @@ export function PrivateRoute() {
     // than dropping them off on the home page.
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
+  
+    //ตรวจสอบว่าตรงกับ roles ["a","b","c"] ใดๆ ที่ส่งเข้ามาหรือไม่
+    if (roles && !roles?.some((r) => user.roles?.includes(r))) {
+      toast.error("Not authorized to access this area");
+      return <Navigate to="/catalog" state={{ from: location }} replace />;
+    }
+  
 
   return <Outlet />;
 }

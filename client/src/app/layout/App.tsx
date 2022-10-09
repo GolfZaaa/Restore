@@ -23,6 +23,7 @@ import { fetchCurrentUser } from "../../features/account/accountSlice";
 import { PrivateLogin, PrivateRoute } from "./PrivateRoute";
 import OrderPage from "../../features/orders/OrderPage";
 import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
+import Inventory from "../../features/admin/Inventory";
 
 export default function App() {
   // const { setBasket } = useStoreContext(); //ควบคุมสเตทด้วย React context to Centralize
@@ -101,9 +102,14 @@ const mainroute = (
         </PrivateLogin>
       }
     />
-    <Route element={<PrivateRoute />}>
+    <Route element={<PrivateRoute/>}>
       <Route path="/checkout" element={<CheckoutWrapper />} />
       <Route path="/order" element={<OrderPage/>}/>
     </Route>
+
+    <Route element={<PrivateRoute roles={["Admin"]} />}>
+      <Route path="/inventory" element={<Inventory />} />
+    </Route>
+
   </Routes>
 );
